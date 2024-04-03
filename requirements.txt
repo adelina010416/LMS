@@ -1,0 +1,9 @@
+asgiref
+Django
+psycopg2
+sqlparse
+tzdata
+pillow
+pytils
+python-dotenv
+djangorestframework
