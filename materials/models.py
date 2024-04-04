@@ -1,12 +1,17 @@
 from django.db import models
 
 from constants import nullable
+from users.models import User
+
+
+# from users.models import User
 
 
 class Course(models.Model):
     name = models.CharField(max_length=100, verbose_name='название')
     description = models.TextField(max_length=250, **nullable, verbose_name='описание')
     preview = models.ImageField(upload_to='courses/', **nullable, verbose_name='превью')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, **nullable, verbose_name='автор')
 
     def __str__(self):
         return f'{self.name}'

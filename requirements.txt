@@ -8,3 +8,4 @@ pytils
 python-dotenv
 djangorestframework
 django-filter
+djangorestframework-simplejwt

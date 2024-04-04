@@ -11,5 +11,7 @@ router.register(r'courses', CourseViewSet, basename='courses')
 
 urlpatterns = [
     path('lessons/', LessonList.as_view(), name='lessons'),
-    path('lessons/detail/<int:pk>', LessonDetail.as_view(), name='lesson')
+    path('lessons/create/', LessonCreate.as_view(), name='lesson_create'),
+    path('lessons/detail/<int:pk>', LessonRetrieveUpdate.as_view(), name='lesson_detail_update'),
+    path('lessons/delete/<int:pk>', LessonDestroy.as_view(), name='lesson_delete'),
               ] + router.urls
