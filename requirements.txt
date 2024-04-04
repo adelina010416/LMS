@@ -7,3 +7,4 @@ pillow
 pytils
 python-dotenv
 djangorestframework
+django-filter

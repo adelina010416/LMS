@@ -1,0 +1,46 @@
+[
+{
+  "model": "users.user",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$EAZvbPDamhsx08xBaSGOOQ$+TCk1ikF9SUkc8sFVwyMMU91YBxOMsC1QE6nsJOVkTI=",
+    "last_login": null,
+    "is_superuser": true,
+    "first_name": "Adelina",
+    "last_name": "Zimina",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2024-04-04T14:06:43.739Z",
+    "email": "adelinazima@mail.ru",
+    "phone": null,
+    "city": null,
+    "avatar": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.payment",
+  "pk": 1,
+  "fields": {
+    "user": 6,
+    "course": 2,
+    "lesson": null,
+    "date": "2012-06-18T06:34:09Z",
+    "payment_amount": 34567,
+    "payment_way": "cash"
+  }
+},
+{
+  "model": "users.payment",
+  "pk": 2,
+  "fields": {
+    "user": 6,
+    "course": null,
+    "lesson": 1,
+    "date": "2012-06-18T06:34:09Z",
+    "payment_amount": 45678,
+    "payment_way": "transfer"
+  }
+}
+]
