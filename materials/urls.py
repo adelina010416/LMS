@@ -12,6 +12,8 @@ router.register(r'courses', CourseViewSet, basename='courses')
 urlpatterns = [
     path('lessons/', LessonList.as_view(), name='lessons'),
     path('lessons/create/', LessonCreate.as_view(), name='lesson_create'),
-    path('lessons/detail/<int:pk>', LessonRetrieveUpdate.as_view(), name='lesson_detail_update'),
+    path('lessons/detail/<int:pk>', LessonRetrieve.as_view(), name='lesson_detail'),
+    path('lessons/update/<int:pk>', LessonUpdate.as_view(), name='lesson_update'),
     path('lessons/delete/<int:pk>', LessonDestroy.as_view(), name='lesson_delete'),
+    path('subscribe/', SetSubscription.as_view(), name='subscribe_settings')
               ] + router.urls
