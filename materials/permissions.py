@@ -1,6 +1,6 @@
 from rest_framework.permissions import BasePermission
 
-from materials.models import Course, Lesson, Subscription
+from materials.models import Course, Lesson, Subscription, Payment
 
 
 class IsModarator(BasePermission):
@@ -14,6 +14,8 @@ class IsOwner(BasePermission):
             return obj.author == request.user
         elif isinstance(obj, Lesson):
             return obj.course.author == request.user
+        elif isinstance(obj, Payment):
+            return obj.user == request.user
         return False
 
 
@@ -30,4 +32,15 @@ class IsSubscriber(BasePermission):
         elif isinstance(obj, Lesson):
             subscription = Subscription.objects.filter(user=request.user, course=obj.course.id)
             return subscription.exists()
+        return False
+
+
+class IsCustomer(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if isinstance(obj, Course):
+            purchase = Payment.objects.filter(user=request.user, course=obj.id, status='paid')
+            return purchase.exists()
+        elif isinstance(obj, Lesson):
+            purchase = Payment.objects.filter(user=request.user, lesson=obj.id, status='paid')
+            return purchase.exists()
         return False

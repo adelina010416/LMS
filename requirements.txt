@@ -9,3 +9,5 @@ python-dotenv
 djangorestframework
 django-filter
 djangorestframework-simplejwt
+drf_yasg
+stripe

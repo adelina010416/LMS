@@ -133,7 +133,7 @@ class SubscriptionAPITestCase(APITestCase):
         self.data = {"id": self.course.id}
 
     def test_set_subscription(self):
-        """ Проверка добавления подписки """
+        """ Проверка подписки """
         response = self.client.post('/subscribe/', self.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json(), {"message": "подписка добавлена"})
