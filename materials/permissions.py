@@ -1,6 +1,7 @@
 from rest_framework.permissions import BasePermission
 
 from materials.models import Course, Lesson, Subscription, Payment
+from users.models import User
 
 
 class IsModarator(BasePermission):
@@ -16,6 +17,8 @@ class IsOwner(BasePermission):
             return obj.course.author == request.user
         elif isinstance(obj, Payment):
             return obj.user == request.user
+        elif isinstance(obj, User):
+            return obj.email == request.user.email
         return False
 
 
