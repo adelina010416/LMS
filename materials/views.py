@@ -1,18 +1,18 @@
 from datetime import datetime
 
-from django.shortcuts import render, get_object_or_404
-from rest_framework.decorators import api_view
-from rest_framework.filters import OrderingFilter
+from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics, serializers
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.decorators import api_view
+from rest_framework.filters import OrderingFilter
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from materials.models import Course, Lesson, Subscription, Payment
 from materials.paginators import MyPagination
 from materials.permissions import IsNotStaffUser, IsOwner, IsModarator, IsCustomer
 from materials.serializer import CourseSerializer, LessonSerializer, SubscriptionSerializer, PaymentSerializer
-from materials.services import get_session, get_payment_status
+from materials.services import get_session, get_payment_status, send_course_notification
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -35,6 +35,13 @@ class CourseViewSet(viewsets.ModelViewSet):
             permission_classes = [IsOwner]
         return [permission() for permission in permission_classes]
 
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+    def perform_update(self, serializer):
+        course = serializer.save(author=self.request.user).id
+        send_course_notification.delay(obj_id=course, obj_type='course')
+
 
 class LessonList(generics.ListAPIView):
     queryset = Lesson.objects.all()
@@ -47,6 +54,13 @@ class LessonCreate(generics.CreateAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = [IsNotStaffUser & IsAuthenticated]
+
+    def perform_create(self, serializer):
+        lesson = serializer.save()
+        user_courses = Course.objects.filter(author=self.request.user)
+        if lesson.course not in user_courses:
+            raise serializers.ValidationError('Курс не найден. Пожалуйста, укажите один из своих курсов.')
+        send_course_notification.delay(lesson.id, 'lesson', 'create')
 
 
 class LessonRetrieve(generics.RetrieveAPIView):
@@ -63,6 +77,16 @@ class LessonUpdate(generics.UpdateAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated & (IsModarator | IsOwner)]
+
+    def perform_update(self, serializer):
+        lesson = serializer.save()
+        user_courses = Course.objects.filter(author=self.request.user)
+        print(1)
+        if lesson.course not in user_courses:
+            raise serializers.ValidationError('Курс не найден. Пожалуйста, укажите один из своих курсов.')
+        print(1.1)
+        send_course_notification.delay(lesson.id, 'lesson', action='update')
+        print(1.2)
 
 
 class LessonDestroy(generics.DestroyAPIView):

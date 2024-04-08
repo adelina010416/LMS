@@ -11,3 +11,7 @@ django-filter
 djangorestframework-simplejwt
 drf_yasg
 stripe
+celery
+django-celery-beat
+redis
+eventlet

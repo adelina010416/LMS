@@ -1,5 +1,8 @@
+from datetime import datetime
+
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 from materials.permissions import IsModarator, IsOwner
 from users.models import User
@@ -23,3 +26,12 @@ class UserViewSet(viewsets.ModelViewSet):
         user = serializer.save()
         user.set_password(serializer.data['password'])
         user.save()
+
+
+class UserAuth(TokenObtainPairView):
+
+    def post(self, request, *args, **kwargs):
+        user = User.objects.filter(email=request.data.get('email')).first()
+        user.last_login = datetime.now()
+        user.save()
+        return super().post(request, *args, **kwargs)
