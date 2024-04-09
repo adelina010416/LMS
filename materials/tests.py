@@ -38,7 +38,7 @@ class LessonsAPITestCase(APITestCase):
                           'results':
                               [
                                   {'id': self.lesson.id, 'name': self.lesson.name,
-                                   'description': self.lesson.description, 'preview': None,
+                                   'description': self.lesson.description, 'preview': None, 'price': self.lesson.price,
                                    'link_video': self.lesson.link_video, 'course': self.lesson.course.id}
                               ]
                           })
@@ -54,6 +54,7 @@ class LessonsAPITestCase(APITestCase):
                           'preview': self.lesson.preview,
                           'link_video': self.lesson.link_video,
                           'course': self.lesson.course.id,
+                          'price': self.lesson.price
                           }
                          )
 
@@ -97,7 +98,8 @@ class LessonsAPITestCase(APITestCase):
             'description': 'big change',
             'preview': '',
             'link_video': '',
-            'course': self.course.id
+            'course': self.course.id,
+            'price': 100
         }
         response = self.client.put(f'/lessons/update/{self.lesson.id}', data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -107,7 +109,8 @@ class LessonsAPITestCase(APITestCase):
                           'description': data['description'],
                           'preview': None,
                           'link_video': data['link_video'],
-                          'course': data['course']
+                          'course': data['course'],
+                          'price': data['price']
                           }
                          )
 
