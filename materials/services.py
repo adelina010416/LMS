@@ -66,6 +66,6 @@ def send_course_notification(obj_id, obj_type, action=None):
             )
 
 
-@shared_task
-def send_update_course_notification():
-    pass
+# @shared_task
+# def send_update_course_notification():
+#     pass
