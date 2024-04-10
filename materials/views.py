@@ -81,12 +81,9 @@ class LessonUpdate(generics.UpdateAPIView):
     def perform_update(self, serializer):
         lesson = serializer.save()
         user_courses = Course.objects.filter(author=self.request.user)
-        print(1)
         if lesson.course not in user_courses:
             raise serializers.ValidationError('Курс не найден. Пожалуйста, укажите один из своих курсов.')
-        print(1.1)
         send_course_notification.delay(lesson.id, 'lesson', action='update')
-        print(1.2)
 
 
 class LessonDestroy(generics.DestroyAPIView):
