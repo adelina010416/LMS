@@ -64,3 +64,10 @@ class Payment(models.Model):
                                    default='transfer', verbose_name='способ оплаты')
     session_id = models.CharField(**nullable, verbose_name='id сессии stripe')
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='unpaid', verbose_name='статус')
+
+    def __str__(self):
+        return f"Оплата за {self.date}"
+
+    class Meta:
+        verbose_name = 'Оплата'
+        verbose_name_plural = 'Оплаты'

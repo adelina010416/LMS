@@ -1,9 +1,11 @@
 from datetime import datetime
 
+import pytz
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 
+from config.settings import TIME_ZONE
 from materials.permissions import IsModarator, IsOwner
 from users.models import User
 from users.serializer import UserSerializer
@@ -32,6 +34,6 @@ class UserAuth(TokenObtainPairView):
 
     def post(self, request, *args, **kwargs):
         user = User.objects.filter(email=request.data.get('email')).first()
-        user.last_login = datetime.now()
+        user.last_login = datetime.now(pytz.timezone(TIME_ZONE))
         user.save()
         return super().post(request, *args, **kwargs)

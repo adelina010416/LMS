@@ -161,9 +161,6 @@ AUTH_USER_MODEL = 'users.User'
 
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 
-# LOGIN_REDIRECT_URL = '/home'
-# LOGOUT_REDIRECT_URL = '/home'
-# LOGIN_URL = '/user/login-fail'
 
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')# URL-адрес брокера сообщений
 CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')# URL-адрес брокера результатов, также Redis
